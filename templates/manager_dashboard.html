@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .task-box, .progress-box, .chat-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            margin: 0 10px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .task-list, .progress-list, .chat-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item, .progress-item, .chat-item {
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .task-item span, .progress-item span, .chat-item span {
+            font-size: 16px;
+            color: #333;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .nav-button {
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 150px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        Manager Dashboard
+    </header>
+
+    <div class="container">
+        <div class="task-box">
+            <h2>Tasks Overview</h2>
+            <ul class="task-list">
+                {% for task in tasks %}
+                    <li class="task-item">
+                        <span><strong>{{ task.name }}</strong> - Status: {{ task.status }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="progress-box">
+            <h2>Daily Progress Updates</h2>
+            <ul class="progress-list">
+                {% for progress in progress_updates %}
+                    <li class="progress-item">
+                        <span><strong>{{ progress.user.username }}</strong>: {{ progress.text }} ({{ progress.created_at }})</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="chat-box">
+            <h2>Chat Messages</h2>
+            <ul class="chat-list">
+                {% for chat in chat_messages %}
+                    <li class="chat-item">
+                        <span><strong>{{ chat.user.username }}</strong>: {{ chat.message }} ({{ chat.created_at }})</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <a href="{% url 'manager' %}" class="nav-button">Manager Dashboard</a>
+
+    <footer>
+        &copy; 2024 ToDo List App. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

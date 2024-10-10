@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Tasks</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 30px;
+        }
+        .task-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .task-item span {
+            font-size: 16px;
+            color: #333;
+            display: block;
+        }
+        .task-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .progress-form, .chat-form {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Your Tasks
+    </header>
+
+    <div class="container">
+        <div class="task-box">
+            <h2>Task List</h2>
+            <ul class="task-list">
+                {% if tasks %}
+                    {% for task in tasks %}
+                    <li class="task-item">
+                        <span><strong>{{ task.name }}</strong></span>
+                        <div class="task-controls">
+                            <form method="POST" action="{% url 'update_task_status' task.id %}">
+                                {% csrf_token %}
+                                <select name="status" required>
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                                <button type="submit">Update Status</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="task-item">
+                        <span>No tasks assigned.</span>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <h2>Update Daily Progress</h2>
+            <form method="POST" class="progress-form" action="{% url 'update_progress' %}">
+                {% csrf_token %}
+                <textarea name="progress" placeholder="Enter your daily progress here..." required></textarea>
+                <button type="submit">Submit Progress</button>
+            </form>
+
+            <h2>Chat with Manager</h2>
+            <form method="POST" class="chat-form" action="{% url 'send_chat' %}">
+                {% csrf_token %}
+                <textarea name="message" placeholder="Type your message to the manager..." required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 ToDo List App. All Rights Reserved.
+    </footer>
+
+</body>
+</html>
